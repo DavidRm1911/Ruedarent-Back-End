@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+.DS_Store
+.src/main/resources/.environment
+
 ### STS ###
 .apt_generated
 .classpath
