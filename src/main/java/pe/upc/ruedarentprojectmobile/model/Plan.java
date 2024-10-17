@@ -18,10 +18,13 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPlan;
 
-    private String PlanType;
-    private String PlanDescription;
-    private Double PlanPrice;
+    private String planType;
+    private String planDescription;
+    private Double planPrice;
 
     @OneToMany(mappedBy = "plan")
     private List<Student> students;
+
+    public Plan(String planType) {
+    }
 }

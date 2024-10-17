@@ -1,6 +1,8 @@
 package pe.upc.ruedarentprojectmobile.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +28,11 @@ public class Acquirer {
     private String phone;
     private String dni;
 
-    @OneToMany(mappedBy = "acquirer")
+    @OneToMany(mappedBy = "acquirer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Reservation> reservations;
 
 
+    public Acquirer(Long idClient) {
+    }
 }

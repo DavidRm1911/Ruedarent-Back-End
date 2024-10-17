@@ -29,6 +29,19 @@ public class Student {
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;
+
+    public Student(String name, String lastName, String dni, String email, String phone, Integer age, Plan plan) {
+        this.name = name;
+        this.lastName = lastName;
+        this.dni = dni;
+        this.email = email;
+        this.phone = phone;
+        this.age = age;
+        this.plan = plan;
+    }
+
+    public Student(String dni) {
+    }
 }

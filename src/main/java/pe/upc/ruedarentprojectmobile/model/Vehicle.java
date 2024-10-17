@@ -29,4 +29,15 @@ public class Vehicle {
 
     @OneToMany(mappedBy = "vehicle")
     private List<Reservation> reservations;
+
+    public Vehicle(String brand, String model, String color, String vehicleType, Student student) {
+        this.brand = brand;
+        this.model = model;
+        this.color = color;
+        this.vehicleType = vehicleType;
+        this.owner = student;
+    }
+
+    public Vehicle(Long idVehicle) {
+    }
 }
