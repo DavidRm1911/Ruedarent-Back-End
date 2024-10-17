@@ -29,10 +29,11 @@ public class Acquirer {
     private String dni;
 
     @OneToMany(mappedBy = "acquirer", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "acquirer-reservation")
     private List<Reservation> reservations;
 
 
     public Acquirer(Long idClient) {
+
     }
 }

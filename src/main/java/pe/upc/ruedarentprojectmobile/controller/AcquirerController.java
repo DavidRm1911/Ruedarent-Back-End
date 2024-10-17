@@ -29,7 +29,7 @@ public class AcquirerController {
         }
     }
 
-    @GetMapping("/{acquirerId}/acquirer")
+    @GetMapping("/id/{acquirerId}/acquirer")
     public ResponseEntity<ApiResponse> getAcquirer(@PathVariable Long acquirerId){
         try {
             Acquirer acquirer = acquirerService.getAcquirer(acquirerId);
@@ -39,7 +39,7 @@ public class AcquirerController {
         }
     }
 
-    @GetMapping("/{dni}/acquirer")
+    @GetMapping("/dni/{dni}/acquirer")
     public ResponseEntity<ApiResponse> getAcquirerByDni(@PathVariable String dni){
         try {
             Acquirer acquirer = acquirerService.getAcquirerByDni(dni);

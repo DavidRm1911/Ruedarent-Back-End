@@ -1,4 +1,7 @@
 package pe.upc.ruedarentprojectmobile.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,9 +25,12 @@ public class Plan {
     private String planDescription;
     private Double planPrice;
 
+
     @OneToMany(mappedBy = "plan")
+    @JsonIgnore
     private List<Student> students;
 
     public Plan(String planType) {
+        this.planType = planType;
     }
 }

@@ -1,4 +1,6 @@
 package pe.upc.ruedarentprojectmobile.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 import jakarta.persistence.*;

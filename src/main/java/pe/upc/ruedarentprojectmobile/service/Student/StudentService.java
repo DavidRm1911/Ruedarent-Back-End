@@ -30,12 +30,18 @@ public class StudentService implements IStudentService{
 
     @Override
     public Student addStudent(AddStudentRequest student) {
-        Plan plan = Optional.ofNullable(planRepository.findByPlanType(student.getPlan().getPlanType()))
-                .orElseGet(() -> {
-                    Plan newPlan = new Plan(student.getPlan().getPlanType());
-                    return planRepository.save(newPlan);
-                });
+        // Buscar el plan existente por tipo
+        Plan plan = planRepository.findByPlanType(student.getPlan().getPlanType());
+
+        if (plan == null) {
+            // Si no existe, lanzar una excepción o manejarlo como desees
+            throw new RuntimeException("Plan not found");
+        }
+
+        // Establecer el plan existente al estudiante
         student.setPlan(plan);
+
+        // Crear y guardar el estudiante
         return studentRepository.save(createStudent(student, plan));
     }
 

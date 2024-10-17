@@ -1,6 +1,6 @@
 package pe.upc.ruedarentprojectmobile.model;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,12 +19,23 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonBackReference
+    @JsonBackReference(value = "acquirer-reservation")
     private Acquirer acquirer;
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
+    @JsonBackReference(value = "vehicle-reservation")
     private Vehicle vehicle;
+
+    @JsonProperty("ownerId")
+    public Long getOwnerId() {
+        return this.acquirer != null ? this.acquirer.getIdClient() : null;
+    }
+
+    @JsonProperty("vehicleId")
+    public Long getVehicleId() {
+        return this.vehicle != null ? this.vehicle.getIdVehicle() : null;
+    }
 
     public Reservation(Acquirer acquirer, Vehicle vehicle) {
         this.acquirer = acquirer;

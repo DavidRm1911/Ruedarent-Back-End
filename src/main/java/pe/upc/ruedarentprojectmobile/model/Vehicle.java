@@ -1,5 +1,7 @@
 package pe.upc.ruedarentprojectmobile.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,9 +27,11 @@ public class Vehicle {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @JsonIgnore
     private Student owner;
 
     @OneToMany(mappedBy = "vehicle")
+    @JsonManagedReference(value = "vehicle-reservation")
     private List<Reservation> reservations;
 
     public Vehicle(String brand, String model, String color, String vehicleType, Student student) {
@@ -39,5 +43,6 @@ public class Vehicle {
     }
 
     public Vehicle(Long idVehicle) {
+
     }
 }
