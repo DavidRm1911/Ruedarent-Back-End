@@ -15,7 +15,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/Acquirer")
+@RequestMapping("${api.prefix}/acquirers")
 public class AcquirerController {
     private final IAcquirerService acquirerService;
 

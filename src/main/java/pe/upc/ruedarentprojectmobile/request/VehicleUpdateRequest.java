@@ -13,5 +13,6 @@ public class VehicleUpdateRequest {
     private String model;
     private String color;
     private String vehicleType;
+    private String imageUrl;
     private Student owner;
 }

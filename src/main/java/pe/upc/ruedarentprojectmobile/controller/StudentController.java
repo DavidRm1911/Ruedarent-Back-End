@@ -17,7 +17,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/students")
+@RequestMapping("${api.prefix}/owners")
 public class StudentController {
     private final StudentService studentService;
 
@@ -27,26 +27,26 @@ public class StudentController {
         return ResponseEntity.ok(new ApiResponse("success", students));
     }
 
-    @GetMapping("/student/{id}")
+    @GetMapping("/owner/{id}")
     public ResponseEntity<ApiResponse> getStudentById(@PathVariable Long id) {
         Student student = studentService.getStudentById(id);
         return ResponseEntity.ok(new ApiResponse("success", student) );
     }
 
-    @GetMapping("/student/email/{email}")
+    @GetMapping("/owner/email/{email}")
     public ResponseEntity<ApiResponse> getStudentByEmail(@PathVariable String email) {
         Student student = studentService.getStudentByEmail(email);
         return ResponseEntity.ok(new ApiResponse("success", student));
     }
 
 
-    @GetMapping("/student/dni/{dni}")
+    @GetMapping("/owner/dni/{dni}")
     public ResponseEntity<ApiResponse> getStudentByDni(@PathVariable String dni) {
         Student student = studentService.getStudentByDni(dni);
         return ResponseEntity.ok(new ApiResponse("success", student));
     }
 
-    @GetMapping("/student/planType/{planType}")
+    @GetMapping("/owner/planType/{planType}")
     public ResponseEntity<ApiResponse> getStudentByPlanType(@PathVariable String planType){
         List<Student> students = studentService.getStudentByPlanType(planType);
         return ResponseEntity.ok(new ApiResponse("success", students));

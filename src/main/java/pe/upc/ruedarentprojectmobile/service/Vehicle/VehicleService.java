@@ -47,6 +47,7 @@ public class VehicleService implements IVehicleService {
                 request.getModel(),
                 request.getColor(),
                 request.getVehicleType(),
+                request.getImageUrl(),
                 student
         );
     }
@@ -69,6 +70,7 @@ public class VehicleService implements IVehicleService {
         existingVehicle.setVehicleType(request.getVehicleType());
         existingVehicle.setColor(request.getColor());
         existingVehicle.setModel(request.getModel());
+        existingVehicle.setImageUrl(request.getImageUrl());
 
         Student student = studentRepository.findByDni(request.getOwner().getDni());
         existingVehicle.setOwner(student);

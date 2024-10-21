@@ -24,6 +24,7 @@ public class Vehicle {
     private String model;
     private String color;
     private String vehicleType;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -34,11 +35,12 @@ public class Vehicle {
     @JsonManagedReference(value = "vehicle-reservation")
     private List<Reservation> reservations;
 
-    public Vehicle(String brand, String model, String color, String vehicleType, Student student) {
+    public Vehicle(String brand, String model, String color, String vehicleType, String imageUrl, Student student) {
         this.brand = brand;
         this.model = model;
         this.color = color;
         this.vehicleType = vehicleType;
+        this.imageUrl = imageUrl;
         this.owner = student;
     }
 
