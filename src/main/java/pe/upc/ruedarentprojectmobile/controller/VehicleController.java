@@ -72,4 +72,36 @@ public class VehicleController {
         Vehicle theVehicle = vehicleService.updateVehicle(vehicle, vehicleId);
         return ResponseEntity.ok(new ApiResponse("success", theVehicle));
     }
+
+    @GetMapping("/isAvailable/{isAvailable}")
+    ResponseEntity<ApiResponse> getVehiclesByIsAvailable(@PathVariable Boolean isAvailable) {
+        List<Vehicle> vehicles = vehicleService.getVehiclesByIsAvailable(isAvailable);
+        return ResponseEntity.ok(new ApiResponse("success", vehicles));
+    }
+
+    @GetMapping("/rentalPriceLessThan/{rentalPrice}")
+    ResponseEntity<ApiResponse> getVehiclesByRentalPriceLessThan(@PathVariable Double rentalPrice) {
+        List<Vehicle> vehicles = vehicleService.getVehiclesByRentalPriceLessThan(rentalPrice);
+        return ResponseEntity.ok(new ApiResponse("success", vehicles));
+    }
+
+    @GetMapping("/sellingPriceLessThan/{sellingPrice}")
+    ResponseEntity<ApiResponse> getVehiclesBySellingPriceLessThan(@PathVariable Double sellingPrice) {
+        List<Vehicle> vehicles = vehicleService.getVehiclesBySellingPriceLessThan(sellingPrice);
+        return ResponseEntity.ok(new ApiResponse("success", vehicles));
+    }
+
+    @GetMapping("/ubication/{location}")
+    ResponseEntity<ApiResponse> getVehiclesByUbication(@PathVariable String location) {
+        List<Vehicle> vehicles = vehicleService.getVehiclesByUbication(location);
+        return ResponseEntity.ok(new ApiResponse("success", vehicles));
+    }
+
+    @GetMapping("/vehicleTypeAndBrand/{vehicleType}/{brand}")
+    ResponseEntity<ApiResponse> getVehiclesByVehicleTypeAndBrand(@PathVariable String vehicleType, @PathVariable String brand) {
+        List<Vehicle> vehicles = vehicleService.getVehiclesByVehicleTypeAndBrand(vehicleType, brand);
+        return ResponseEntity.ok(new ApiResponse("success", vehicles));
+    }
+
+
 }

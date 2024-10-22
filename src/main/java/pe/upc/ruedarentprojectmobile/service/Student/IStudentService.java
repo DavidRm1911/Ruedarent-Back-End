@@ -15,4 +15,5 @@ public interface IStudentService {
     Student getStudentByEmail(String email);
     Student getStudentByDni(String dni);
     List<Student> getStudentByPlanType(String planType);
+    List<Student> getStudentByPlanIdPlan(Long id);
 }

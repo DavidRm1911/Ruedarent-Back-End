@@ -15,4 +15,11 @@ public interface IVehicleService {
     List<Vehicle> getVehiclesByVehicleType(String vehicleType);
     List<Vehicle> getVehiclesByBrand(String brand);
     List<Vehicle> getVehiclesByStudentDni(String dni);
+    List<Vehicle> findVehicleByOwner_IdStudent(Long id);
+    List<Vehicle> getVehiclesByIsAvailable(Boolean isAvailable);
+    List<Vehicle> getVehiclesByRentalPriceLessThan(Double rentalPrice);
+    List<Vehicle> getVehiclesBySellingPriceLessThan(Double sellingPrice);
+    List<Vehicle> getVehiclesByUbication(String location);
+    List<Vehicle> getVehiclesByVehicleTypeAndBrand(String vehicleType, String brand);
+
 }

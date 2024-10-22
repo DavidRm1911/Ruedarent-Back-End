@@ -2,7 +2,7 @@ package pe.upc.ruedarentprojectmobile.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "owners")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +32,34 @@ public class Student {
     @JoinColumn(name = "plan_id")
     private Plan plan;
 
+    public Student(Long idOwner) {
+    }
+
+    @JsonProperty("planId")
+    public Long getPlanId(){
+        return this.plan != null ? this.plan.getIdPlan() : null;
+    }
+
+    //   @ManyToOne
+    //    @JoinColumn(name = "client_id")
+    //    @JsonBackReference(value = "acquirer-reservation")
+    //    private Acquirer acquirer;
+    //
+    //    @ManyToOne
+    //    @JoinColumn(name = "vehicle_id")
+    //    @JsonBackReference(value = "vehicle-reservation")
+    //    private Vehicle vehicle;
+    //
+    //    @JsonProperty("ownerId")
+    //    public Long getOwnerId() {
+    //        return this.acquirer != null ? this.acquirer.getIdClient() : null;
+    //    }
+    //
+    //    @JsonProperty("vehicleId")
+    //    public Long getVehicleId() {
+    //        return this.vehicle != null ? this.vehicle.getIdVehicle() : null;
+    //    }
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vehicle> vehicles;
 
@@ -44,6 +73,12 @@ public class Student {
         this.plan = plan;
     }
 
-    public Student(String dni) {
+    public Student(Plan plan){
+        this.plan = plan;
     }
+
+    // public Reservation(Acquirer acquirer, Vehicle vehicle) {
+    //        this.acquirer = acquirer;
+    //        this.vehicle = vehicle;
+    //    }
 }

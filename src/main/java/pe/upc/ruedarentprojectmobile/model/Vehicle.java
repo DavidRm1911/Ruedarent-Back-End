@@ -25,6 +25,14 @@ public class Vehicle {
     private String color;
     private String vehicleType;
     private String imageUrl;
+    private Double rentalprice;
+    private Double sellingprice;
+    private String description;
+
+    private String ubication;
+
+
+    private Boolean isAvailable = true;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -35,16 +43,29 @@ public class Vehicle {
     @JsonManagedReference(value = "vehicle-reservation")
     private List<Reservation> reservations;
 
-    public Vehicle(String brand, String model, String color, String vehicleType, String imageUrl, Student student) {
+    public Vehicle(String brand, String model, String color, String vehicleType, String imageUrl, Double rentalprice, Double sellingprice, String description, Boolean isAvailable, String ubication, Student student) {
         this.brand = brand;
         this.model = model;
         this.color = color;
         this.vehicleType = vehicleType;
         this.imageUrl = imageUrl;
+        this.rentalprice = rentalprice;
+        this.sellingprice = sellingprice;
+        this.description = description;
+        this.ubication = ubication;
+
+        this.isAvailable = isAvailable;
+
+
+
         this.owner = student;
     }
 
     public Vehicle(Long idVehicle) {
+
+    }
+
+    public void setAvailable(boolean b) {
 
     }
 }

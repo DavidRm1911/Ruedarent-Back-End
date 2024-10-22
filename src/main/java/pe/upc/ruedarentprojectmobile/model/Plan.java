@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "plansstudent")
+@Table(name = "plans_owner")
 public class Plan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,9 @@ public class Plan {
     @JsonIgnore
     private List<Student> students;
 
-    public Plan(String planType) {
-        this.planType = planType;
+    //Optional
+
+    public Plan(Long idPlan) {
+        this.idPlan = idPlan;
     }
 }

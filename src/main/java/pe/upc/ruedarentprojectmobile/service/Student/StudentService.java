@@ -30,18 +30,29 @@ public class StudentService implements IStudentService{
 
     @Override
     public Student addStudent(AddStudentRequest student) {
-        // Buscar el plan existente por tipo
-        Plan plan = planRepository.findByPlanType(student.getPlan().getPlanType());
+
+        // Acquirer acquirer = acquirerRepository.findById(request.getAcquirer().getIdClient())
+        //                .orElseGet(() -> {
+        //                    Acquirer newAcquirer = new Acquirer(request.getAcquirer().getIdClient());
+        //                    return acquirerRepository.save(newAcquirer);
+        //                });
+        //        request.setAcquirer(acquirer);
+
+        Plan plan = planRepository.findById(student.getPlan().getIdPlan())
+                .orElseGet(()-> {
+                    Plan newPlan = new Plan(student.getPlan().getIdPlan());
+                    return planRepository.save(newPlan);
+                });
+        student.setPlan(plan);
+
+        //return reservationRepository.save(createReservation(request, acquirer, vehicle));
+
 
         if (plan == null) {
-            // Si no existe, lanzar una excepción o manejarlo como desees
+
             throw new RuntimeException("Plan not found");
         }
 
-        // Establecer el plan existente al estudiante
-        student.setPlan(plan);
-
-        // Crear y guardar el estudiante
         return studentRepository.save(createStudent(student, plan));
     }
 
@@ -71,6 +82,9 @@ public class StudentService implements IStudentService{
     }
 
     private Student updateExistingStudent(Student existingStudent, StudentUpdateRequest request){
+
+
+
         existingStudent.setName(request.getName());
         existingStudent.setLastName(request.getLastName());
         existingStudent.setDni(request.getDni());
@@ -78,7 +92,10 @@ public class StudentService implements IStudentService{
         existingStudent.setPhone(request.getPhone());
         existingStudent.setAge(request.getAge());
 
-        Plan plan = planRepository.findByPlanType(request.getPlan().getPlanType());
+        Plan plan = planRepository.findById(request.getPlan().getIdPlan())
+                .orElseThrow(() -> new RuntimeException("Plan not found with id: " + request.getPlan().getIdPlan()));
+        existingStudent.setPlan(plan);
+
         existingStudent.setPlan(plan);
 
         return existingStudent;
@@ -98,4 +115,11 @@ public class StudentService implements IStudentService{
     public List<Student> getStudentByPlanType(String planType) {
         return studentRepository.findByPlanPlanType(planType);
     }
+
+    @Override
+    public List<Student> getStudentByPlanIdPlan(Long id) {
+        return studentRepository.findByPlan_IdPlan(id);
+
+    }
+
 }

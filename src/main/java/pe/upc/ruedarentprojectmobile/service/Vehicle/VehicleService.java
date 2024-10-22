@@ -31,12 +31,15 @@ public class VehicleService implements IVehicleService {
 
     @Override
     public Vehicle addVehicle(AddVehicleRequest request) {
-        Student student = Optional.ofNullable(studentRepository.findByDni(request.getOwner().getDni()))
-                .orElseGet(() -> {
-                    Student newStudent = new Student(request.getOwner().getDni());
-                    return studentRepository.save(newStudent);
 
+
+
+        Student student = studentRepository.findById(request.getOwner().getIdOwner())
+                .orElseGet(() -> {
+                    Student newStudent = new Student(request.getOwner().getIdOwner());
+                    return studentRepository.save(newStudent);
                 });
+
         request.setOwner(student);
         return vehicleRepository.save(createVehicle(request, student));
     }
@@ -48,6 +51,11 @@ public class VehicleService implements IVehicleService {
                 request.getColor(),
                 request.getVehicleType(),
                 request.getImageUrl(),
+                request.getRentalprice(),
+                request.getSellingprice(),
+                request.getDescription(),
+                request.getIsAvailable(),
+                request.getUbication(),
                 student
         );
     }
@@ -71,8 +79,18 @@ public class VehicleService implements IVehicleService {
         existingVehicle.setColor(request.getColor());
         existingVehicle.setModel(request.getModel());
         existingVehicle.setImageUrl(request.getImageUrl());
+        existingVehicle.setRentalprice(request.getRentalprice());
+        existingVehicle.setSellingprice(request.getSellingprice());
+        existingVehicle.setDescription(request.getDescription());
+        existingVehicle.setIsAvailable(Boolean.valueOf(request.getIsAvailable()));
+        existingVehicle.setUbication(request.getUbication());
 
-        Student student = studentRepository.findByDni(request.getOwner().getDni());
+
+        Student student = studentRepository.findById(request.getOwner().getIdOwner())
+                .orElseGet(() -> {
+                    Student newStudent = new Student(request.getOwner().getIdOwner());
+                    return studentRepository.save(newStudent);
+                });
         existingVehicle.setOwner(student);
         return existingVehicle;
     }
@@ -92,6 +110,35 @@ public class VehicleService implements IVehicleService {
         return vehicleRepository.findByOwnerDni(dni);
     }
 
+    @Override
+    public List<Vehicle> findVehicleByOwner_IdStudent(Long id) {
+        return vehicleRepository.findByOwner_IdOwner(id);
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesByIsAvailable(Boolean isAvailable) {
+        return vehicleRepository.findAllByIsAvailable(isAvailable);
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesByRentalPriceLessThan(Double rentalPrice) {
+        return vehicleRepository.findAllByRentalpriceLessThanEqual(rentalPrice);
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesBySellingPriceLessThan(Double sellingPrice) {
+        return vehicleRepository.findAllBySellingpriceLessThan(sellingPrice);
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesByUbication(String location) {
+        return vehicleRepository.findAllByUbication(location);
+    }
+
+    @Override
+    public List<Vehicle> getVehiclesByVehicleTypeAndBrand(String vehicleType, String brand) {
+        return vehicleRepository.findAllByVehicleTypeAndBrand(vehicleType, brand);
+    }
 
 
 }

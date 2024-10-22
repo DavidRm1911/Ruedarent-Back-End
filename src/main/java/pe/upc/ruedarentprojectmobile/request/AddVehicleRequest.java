@@ -14,5 +14,13 @@ public class AddVehicleRequest {
     private String color;
     private String vehicleType;
     private String imageUrl;
+    private Double rentalprice;
+    private Double sellingprice;
+    private String description;
+
+    private Boolean isAvailable = true;
+
+    private String ubication;
+
     private Student owner;
 }
