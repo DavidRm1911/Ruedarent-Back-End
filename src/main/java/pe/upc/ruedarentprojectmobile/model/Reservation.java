@@ -17,19 +17,28 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReservation;
 
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    @JsonBackReference(value = "acquirer-reservation")
-    private Acquirer acquirer;
+    private String fechaInicio;
+    private String fechaFin;
+    private String reservationEstado;
+    private String pickupLocation;
+    private String dropOffLocation;
+    private String fechaSolicitud;
+    private Double precioTotal;
+    private String fechaRespuesta;
 
     @ManyToOne
-    @JoinColumn(name = "vehicle_id")
-    @JsonBackReference(value = "vehicle-reservation")
+    @JoinColumn(name = "idVehiculo")
+    @JsonBackReference
     private Vehicle vehicle;
+
+    @ManyToOne
+    @JoinColumn(name = "idUsuarioSolicitante")
+    @JsonBackReference
+    private User usuarioSolicitante;
 
     @JsonProperty("ownerId")
     public Long getOwnerId() {
-        return this.acquirer != null ? this.acquirer.getIdClient() : null;
+        return this.usuarioSolicitante != null ? this.usuarioSolicitante.getIdUser() : null;
     }
 
     @JsonProperty("vehicleId")
@@ -37,8 +46,9 @@ public class Reservation {
         return this.vehicle != null ? this.vehicle.getIdVehicle() : null;
     }
 
-    public Reservation(Acquirer acquirer, Vehicle vehicle) {
-        this.acquirer = acquirer;
-        this.vehicle = vehicle;
+    public Reservation(Long idReservation) {
+        this.idReservation = idReservation;
     }
+
+
 }

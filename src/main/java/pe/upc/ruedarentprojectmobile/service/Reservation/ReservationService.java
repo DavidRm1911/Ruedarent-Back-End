@@ -36,24 +36,24 @@ public class ReservationService implements IReservationService {
 
     @Override
     public Reservation addReservation(AddReservationRequest request) {
-        // Verificar si el Acquirer existe
+
         Acquirer acquirer = acquirerRepository.findById(request.getAcquirer().getIdClient())
                 .orElseThrow(() -> new IllegalArgumentException("Acquirer not found with id: " + request.getAcquirer().getIdClient()));
 
-        // Verificar si el Vehicle existe
+
         Vehicle vehicle = vehicleRepository.findById(request.getVehicle().getIdVehicle())
                 .orElseThrow(() -> new IllegalArgumentException("Vehicle not found with id: " + request.getVehicle().getIdVehicle()));
 
-        // Verificar si el vehículo está disponible
+
         if (!vehicle.getIsAvailable()) {
             throw new IllegalStateException("Vehicle is not available for reservation");
         }
 
-        // Cambiar el estado del vehículo a no disponible
-        vehicle.setAvailable(false);
-        vehicleRepository.save(vehicle); // Guardar los cambios del vehículo
 
-        // Crear la reserva con el acquirer y vehículo existentes
+        vehicle.setIsAvailable(false);
+        vehicleRepository.save(vehicle);
+
+
         return reservationRepository.save(createReservation(request, acquirer, vehicle));
     }
 

@@ -1,5 +1,6 @@
 package pe.upc.ruedarentprojectmobile.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -20,46 +21,41 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idVehicle;
 
+    private String vehicleType;
     private String brand;
     private String model;
-    private String color;
-    private String vehicleType;
-    private String imageUrl;
+    private Integer year;
+    private String state; //Availabe, Not Available
     private Double rentalprice;
     private Double sellingprice;
+    private String location;
+    private String url;
     private String description;
 
-    private String ubication;
-
-
-    private Boolean isAvailable = true;
-
     @ManyToOne
-    @JoinColumn(name = "owner_id")
-    @JsonIgnore
-    private Student owner;
+    @JoinColumn(name = "idPropietario")
+    @JsonBackReference
+    private User owner;
 
-    @OneToMany(mappedBy = "vehicle")
-    @JsonManagedReference(value = "vehicle-reservation")
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Reservation> reservations;
 
-    public Vehicle(String brand, String model, String color, String vehicleType, String imageUrl, Double rentalprice, Double sellingprice, String description, Boolean isAvailable, String ubication, Student student) {
+    public Vehicle(Long idVehicle, String vehicleType, String brand, String model, Integer year, String state, Double rentalprice, Double sellingprice, String location, String url, String description, User owner) {
+        this.idVehicle = idVehicle;
+        this.vehicleType = vehicleType;
         this.brand = brand;
         this.model = model;
-        this.color = color;
-        this.vehicleType = vehicleType;
-        this.imageUrl = imageUrl;
+        this.year = year;
+        this.state = state;
         this.rentalprice = rentalprice;
         this.sellingprice = sellingprice;
+        this.location = location;
+        this.url = url;
         this.description = description;
-        this.ubication = ubication;
-
-        this.isAvailable = isAvailable;
-
-
-
-        this.owner = student;
+        this.owner = owner;
     }
+
 
     public Vehicle(Long idVehicle) {
 
