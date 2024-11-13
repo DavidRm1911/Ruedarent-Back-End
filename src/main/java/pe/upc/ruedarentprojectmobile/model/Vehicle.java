@@ -34,11 +34,11 @@ public class Vehicle {
 
     @ManyToOne
     @JoinColumn(name = "idPropietario")
-    @JsonBackReference
+    @JsonBackReference("user-vehicle")
     private User owner;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("vehicle-reservation")
     private List<Reservation> reservations;
 
     public Vehicle(Long idVehicle, String vehicleType, String brand, String model, Integer year, String state, Double rentalprice, Double sellingprice, String location, String url, String description, User owner) {
@@ -61,7 +61,18 @@ public class Vehicle {
 
     }
 
-    public void setAvailable(boolean b) {
-
+    public Vehicle(String vehicleType, String brand, String model, Integer year, String location, String url, Double rentalprice, Double sellingprice, String description, String state, User user) {
+        this.vehicleType = vehicleType;
+        this.brand = brand;
+        this.model = model;
+        this.year = year;
+        this.state = state;
+        this.rentalprice = rentalprice;
+        this.sellingprice = sellingprice;
+        this.location = location;
+        this.url = url;
+        this.description = description;
+        this.owner = user;
     }
+
 }

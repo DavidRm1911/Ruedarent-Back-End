@@ -2,11 +2,11 @@ package pe.upc.ruedarentprojectmobile.service.Reservation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pe.upc.ruedarentprojectmobile.model.Acquirer;
+import pe.upc.ruedarentprojectmobile.model.User;
 import pe.upc.ruedarentprojectmobile.model.Reservation;
 import pe.upc.ruedarentprojectmobile.model.Vehicle;
-import pe.upc.ruedarentprojectmobile.repository.AcquirerRepository;
 import pe.upc.ruedarentprojectmobile.repository.ReservationRepository;
+import pe.upc.ruedarentprojectmobile.repository.UserRepository;
 import pe.upc.ruedarentprojectmobile.repository.VehicleRepository;
 import pe.upc.ruedarentprojectmobile.request.AddReservationRequest;
 import pe.upc.ruedarentprojectmobile.request.ReservationUpdateRequest;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReservationService implements IReservationService {
     private final ReservationRepository reservationRepository;
-    private final AcquirerRepository acquirerRepository;
+    private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
 
 
@@ -37,29 +37,37 @@ public class ReservationService implements IReservationService {
     @Override
     public Reservation addReservation(AddReservationRequest request) {
 
-        Acquirer acquirer = acquirerRepository.findById(request.getAcquirer().getIdClient())
-                .orElseThrow(() -> new IllegalArgumentException("Acquirer not found with id: " + request.getAcquirer().getIdClient()));
+        User user = userRepository.findById(request.getUsuarioSolicitante().getIdUser())
+                .orElseThrow(() -> new IllegalArgumentException("Acquirer not found with id: " + request.getUsuarioSolicitante().getIdUser()));
 
 
         Vehicle vehicle = vehicleRepository.findById(request.getVehicle().getIdVehicle())
                 .orElseThrow(() -> new IllegalArgumentException("Vehicle not found with id: " + request.getVehicle().getIdVehicle()));
 
 
-        if (!vehicle.getIsAvailable()) {
+        if (vehicle.getState().equals("Not Available")) {
             throw new IllegalStateException("Vehicle is not available for reservation");
         }
 
 
-        vehicle.setIsAvailable(false);
+        vehicle.setState("Not Available");
         vehicleRepository.save(vehicle);
 
 
-        return reservationRepository.save(createReservation(request, acquirer, vehicle));
+        return reservationRepository.save(createReservation(request, user, vehicle));
     }
 
-    private Reservation createReservation(AddReservationRequest request, Acquirer acquirer, Vehicle vehicle){
+    private Reservation createReservation(AddReservationRequest request, User user, Vehicle vehicle){
         return new Reservation(
-                acquirer,
+                request.getInitialDate(),
+                request.getEndDate(),
+                request.getReservationState(),
+                request.getPickupLocation(),
+                request.getDropOffLocation(),
+                request.getSubmissionDate(),
+                request.getTotalPrice(),
+                request.getAnswerDate(),
+                user,
                 vehicle
         );
     }
@@ -78,22 +86,32 @@ public class ReservationService implements IReservationService {
                 .orElseThrow(() -> new RuntimeException("Reservation not found with id: " + reservationId));
     }
 
+    @Override
+    public List<Reservation> getReservationsByUsuarioSolicitanteIdUser(Long idClient) {
+        return reservationRepository.findByUsuarioSolicitanteIdUser(idClient);
+    }
+
     private Reservation updateExistingReservation (Reservation existingReservation, ReservationUpdateRequest request){
+
+
+
+        existingReservation.setInitialDate(request.getInitialDate());
+        existingReservation.setEndDate(request.getEndDate());
+        existingReservation.setReservationState(request.getReservationState());
+        existingReservation.setPickupLocation(request.getPickupLocation());
+        existingReservation.setDropOffLocation(request.getDropOffLocation());
+        existingReservation.setSubmissionDate(request.getSubmissionDate());
+        existingReservation.setTotalPrice(request.getTotalPrice());
+        existingReservation.setAnswerDate(request.getAnswerDate());
+
         Vehicle vehicle = vehicleRepository.findById(request.getVehicle().getIdVehicle())
                 .orElseThrow(() -> new RuntimeException("Vehicle not found with id: " + request.getVehicle().getIdVehicle()));
         existingReservation.setVehicle(vehicle);
 
-        Acquirer acquirer = acquirerRepository.findById(request.getAcquirer().getIdClient())
-                .orElseThrow(() -> new RuntimeException("Acquirer not found with id: " + request.getAcquirer().getIdClient()));
-        existingReservation.setAcquirer(acquirer);
+        User acquirer = userRepository.findById(request.getUsuarioSolicitante().getIdUser())
+                .orElseThrow(() -> new RuntimeException("Acquirer not found with id: " + request.getUsuarioSolicitante().getIdUser()));
+        existingReservation.setUsuarioSolicitante(acquirer);
         return existingReservation;
-    }
-
-
-
-    @Override
-    public List<Reservation> getReservationsByAcquirer_IdClient(Long idClient) {
-        return reservationRepository.findByAcquirer_IdClient(idClient);
     }
 
     @Override

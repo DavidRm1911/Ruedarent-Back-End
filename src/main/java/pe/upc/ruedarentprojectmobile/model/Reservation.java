@@ -1,6 +1,9 @@
 package pe.upc.ruedarentprojectmobile.model;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,29 +15,44 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@JsonIgnoreProperties("user")
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReservation;
 
-    private String fechaInicio;
-    private String fechaFin;
-    private String reservationEstado;
+    private String initialDate;
+    private String endDate;
+    private String reservationState;
     private String pickupLocation;
     private String dropOffLocation;
-    private String fechaSolicitud;
-    private Double precioTotal;
-    private String fechaRespuesta;
+    private String submissionDate;
+    private Double totalPrice;
+    private String answerDate;
 
     @ManyToOne
     @JoinColumn(name = "idVehiculo")
-    @JsonBackReference
+    @JsonBackReference("vehicle-reservation")
     private Vehicle vehicle;
 
     @ManyToOne
     @JoinColumn(name = "idUsuarioSolicitante")
-    @JsonBackReference
+    @JsonBackReference("user-reservation")
     private User usuarioSolicitante;
+
+
+    public Reservation(String initialDate, String endDate, String reservationState, String pickupLocation, String dropOffLocation, String submissionDate, Double totalPrice, String answerDate, User usuarioSolicitante, Vehicle vehicle) {
+        this.initialDate = initialDate;
+        this.endDate = endDate;
+        this.reservationState = reservationState;
+        this.pickupLocation = pickupLocation;
+        this.dropOffLocation = dropOffLocation;
+        this.submissionDate = submissionDate;
+        this.totalPrice = totalPrice;
+        this.answerDate = answerDate;
+        this.usuarioSolicitante = usuarioSolicitante;
+        this.vehicle = vehicle;
+    }
 
     @JsonProperty("ownerId")
     public Long getOwnerId() {
@@ -49,6 +67,4 @@ public class Reservation {
     public Reservation(Long idReservation) {
         this.idReservation = idReservation;
     }
-
-
 }

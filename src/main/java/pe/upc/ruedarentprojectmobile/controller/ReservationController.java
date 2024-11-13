@@ -27,7 +27,7 @@ public class ReservationController {
 
     @GetMapping("/acquirer/{id}")
     public ResponseEntity<ApiResponse> getReservationsByAcquirerId(@PathVariable Long id) {
-        return ResponseEntity.ok(new ApiResponse("success", reservationService.getReservationsByAcquirer_IdClient(id)));
+        return ResponseEntity.ok(new ApiResponse("success", reservationService.getReservationsByUsuarioSolicitanteIdUser(id)));
     }
 
     @GetMapping("/vehicle/{id}")

@@ -12,6 +12,6 @@ public interface IReservationService {
     Reservation addReservation(AddReservationRequest reservation);
     void deleteReservationById(Long id);
     Reservation updateReservation(ReservationUpdateRequest reservation, Long reservationId);
-    List<Reservation> getReservationsByAcquirer_IdClient(Long idClient);
+    List<Reservation> getReservationsByUsuarioSolicitanteIdUser(Long idClient);
     List<Reservation> getReservationsByVehicle_IdVehicle(Long idVehicle);
 }

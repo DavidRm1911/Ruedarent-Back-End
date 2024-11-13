@@ -1,7 +1,5 @@
 package pe.upc.ruedarentprojectmobile.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,21 +26,19 @@ public class User {
     private String address;
     private String role;
 
-
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("user-vehicle")
     private List<Vehicle> vehicles;
 
-    @OneToMany(mappedBy = "usuarioDestino", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @OneToMany(mappedBy = "destinationUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("user-notification")
     private List<Notification> notifications;
 
     @OneToMany(mappedBy = "usuarioSolicitante", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("user-reservation")
     private List<Reservation> reservations;
 
-
-    public User(Long idClient) {
-
+    public User(Long idUser) {
+        this.idUser = idUser;
     }
 }

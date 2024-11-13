@@ -14,12 +14,12 @@ public interface IVehicleService {
     Vehicle updateVehicle(VehicleUpdateRequest vehicle, Long vehicleId);
     List<Vehicle> getVehiclesByVehicleType(String vehicleType);
     List<Vehicle> getVehiclesByBrand(String brand);
-    List<Vehicle> getVehiclesByStudentDni(String dni);
-    List<Vehicle> findVehicleByOwner_IdStudent(Long id);
-    List<Vehicle> getVehiclesByIsAvailable(Boolean isAvailable);
+    List<Vehicle> getVehiclesByOwnerEmail(String email);
+    List<Vehicle> findVehicleByOwnerId(Long id);
+    List<Vehicle> getVehiclesByState(String state);
     List<Vehicle> getVehiclesByRentalPriceLessThan(Double rentalPrice);
     List<Vehicle> getVehiclesBySellingPriceLessThan(Double sellingPrice);
-    List<Vehicle> getVehiclesByUbication(String location);
+    List<Vehicle> getVehiclesByLocation(String location);
     List<Vehicle> getVehiclesByVehicleTypeAndBrand(String vehicleType, String brand);
 
 }

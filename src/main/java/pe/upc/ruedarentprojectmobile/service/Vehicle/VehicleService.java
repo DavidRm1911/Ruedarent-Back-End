@@ -2,9 +2,9 @@ package pe.upc.ruedarentprojectmobile.service.Vehicle;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pe.upc.ruedarentprojectmobile.model.Student;
+import pe.upc.ruedarentprojectmobile.model.User;
 import pe.upc.ruedarentprojectmobile.model.Vehicle;
-import pe.upc.ruedarentprojectmobile.repository.StudentRepository;
+import pe.upc.ruedarentprojectmobile.repository.UserRepository;
 import pe.upc.ruedarentprojectmobile.repository.VehicleRepository;
 import pe.upc.ruedarentprojectmobile.request.AddVehicleRequest;
 import pe.upc.ruedarentprojectmobile.request.VehicleUpdateRequest;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VehicleService implements IVehicleService {
     private final VehicleRepository vehicleRepository;
-    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
     @Override
     public Vehicle getVehicleById(Long id) {
@@ -34,29 +34,41 @@ public class VehicleService implements IVehicleService {
 
 
 
-        Student student = studentRepository.findById(request.getOwner().getIdOwner())
+        User user = userRepository.findById(request.getOwner().getIdUser())
                 .orElseGet(() -> {
-                    Student newStudent = new Student(request.getOwner().getIdOwner());
-                    return studentRepository.save(newStudent);
+                    User newUser = new User(request.getOwner().getIdUser());
+                    return userRepository.save(newUser);
                 });
 
-        request.setOwner(student);
-        return vehicleRepository.save(createVehicle(request, student));
+        request.setOwner(user);
+        return vehicleRepository.save(createVehicle(request, user));
     }
 
-    private Vehicle createVehicle(AddVehicleRequest request, Student student){
+    private Vehicle createVehicle(AddVehicleRequest request, User user){
         return new Vehicle(
+                // private Long idVehicle;
+                //
+                //    private String vehicleType;
+                //    private String brand;
+                //    private String model;
+                //    private Integer year;
+                //    private String state; //Availabe, Not Available
+                //    private Double rentalprice;
+                //    private Double sellingprice;
+                //    private String location;
+                //    private String url;//imagen
+                //    private String description;
+                request.getVehicleType(),
                 request.getBrand(),
                 request.getModel(),
-                request.getColor(),
-                request.getVehicleType(),
-                request.getImageUrl(),
+                request.getYear(),
+                request.getLocation(),
+                request.getUrl(),
                 request.getRentalprice(),
                 request.getSellingprice(),
                 request.getDescription(),
-                request.getIsAvailable(),
-                request.getUbication(),
-                student
+                request.getState(),
+                user
         );
     }
 
@@ -76,22 +88,22 @@ public class VehicleService implements IVehicleService {
     private Vehicle updateExistingVehicle(Vehicle existingVehicle, VehicleUpdateRequest request){
         existingVehicle.setBrand(request.getBrand());
         existingVehicle.setVehicleType(request.getVehicleType());
-        existingVehicle.setColor(request.getColor());
+        existingVehicle.setYear(request.getYear());
         existingVehicle.setModel(request.getModel());
-        existingVehicle.setImageUrl(request.getImageUrl());
+        existingVehicle.setUrl(request.getUrl());
         existingVehicle.setRentalprice(request.getRentalprice());
         existingVehicle.setSellingprice(request.getSellingprice());
         existingVehicle.setDescription(request.getDescription());
-        existingVehicle.setIsAvailable(Boolean.valueOf(request.getIsAvailable()));
-        existingVehicle.setUbication(request.getUbication());
+        existingVehicle.setState(request.getState());
+        existingVehicle.setLocation(request.getLocation());
 
 
-        Student student = studentRepository.findById(request.getOwner().getIdOwner())
+        User user = userRepository.findById(request.getOwner().getIdUser())
                 .orElseGet(() -> {
-                    Student newStudent = new Student(request.getOwner().getIdOwner());
-                    return studentRepository.save(newStudent);
+                    User newStudent = new User(request.getOwner().getIdUser());
+                    return userRepository.save(newStudent);
                 });
-        existingVehicle.setOwner(student);
+        existingVehicle.setOwner(user);
         return existingVehicle;
     }
 
@@ -106,18 +118,18 @@ public class VehicleService implements IVehicleService {
     }
 
     @Override
-    public List<Vehicle> getVehiclesByStudentDni(String dni) {
-        return vehicleRepository.findByOwnerDni(dni);
+    public List<Vehicle> getVehiclesByOwnerEmail(String email) {
+        return vehicleRepository.findByOwnerEmail(email);
     }
 
     @Override
-    public List<Vehicle> findVehicleByOwner_IdStudent(Long id) {
-        return vehicleRepository.findByOwner_IdOwner(id);
+    public List<Vehicle> findVehicleByOwnerId(Long id) {
+        return vehicleRepository.findAllByOwnerIdUser(id);
     }
 
     @Override
-    public List<Vehicle> getVehiclesByIsAvailable(Boolean isAvailable) {
-        return vehicleRepository.findAllByIsAvailable(isAvailable);
+    public List<Vehicle> getVehiclesByState(String state) {
+        return vehicleRepository.findAllByState(state);
     }
 
     @Override
@@ -131,8 +143,8 @@ public class VehicleService implements IVehicleService {
     }
 
     @Override
-    public List<Vehicle> getVehiclesByUbication(String location) {
-        return vehicleRepository.findAllByUbication(location);
+    public List<Vehicle> getVehiclesByLocation(String location) {
+        return vehicleRepository.findAllByLocation(location);
     }
 
     @Override

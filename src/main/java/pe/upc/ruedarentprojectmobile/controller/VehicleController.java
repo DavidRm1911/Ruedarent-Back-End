@@ -48,9 +48,9 @@ public class VehicleController {
         return ResponseEntity.ok(new ApiResponse("success", vehicles));
     }
 
-    @GetMapping("/student/{dni}")
-    ResponseEntity<ApiResponse> getVehiclesByStudentDni(@PathVariable String dni) {
-        List<Vehicle> vehicles = vehicleService.getVehiclesByStudentDni(dni);
+    @GetMapping("/student/{email}")
+    ResponseEntity<ApiResponse> getVehiclesByOwnerEmail(@PathVariable String email) {
+        List<Vehicle> vehicles = vehicleService.getVehiclesByOwnerEmail(email);
         return ResponseEntity.ok(new ApiResponse("success", vehicles));
     }
 
@@ -74,8 +74,8 @@ public class VehicleController {
     }
 
     @GetMapping("/isAvailable/{isAvailable}")
-    ResponseEntity<ApiResponse> getVehiclesByIsAvailable(@PathVariable Boolean isAvailable) {
-        List<Vehicle> vehicles = vehicleService.getVehiclesByIsAvailable(isAvailable);
+    ResponseEntity<ApiResponse> getVehiclesByIsAvailable(@PathVariable String isAvailable) {
+        List<Vehicle> vehicles = vehicleService.getVehiclesByState(isAvailable);
         return ResponseEntity.ok(new ApiResponse("success", vehicles));
     }
 
@@ -93,7 +93,7 @@ public class VehicleController {
 
     @GetMapping("/ubication/{location}")
     ResponseEntity<ApiResponse> getVehiclesByUbication(@PathVariable String location) {
-        List<Vehicle> vehicles = vehicleService.getVehiclesByUbication(location);
+        List<Vehicle> vehicles = vehicleService.getVehiclesByLocation(location);
         return ResponseEntity.ok(new ApiResponse("success", vehicles));
     }
 
